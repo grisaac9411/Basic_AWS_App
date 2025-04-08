@@ -17,7 +17,8 @@ phases:
       - echo Checking the directory structure...
       - ls -l  # Verifying the directory contents in CodeBuild environment
       - echo Building the Docker image...
-      - docker build -t $REPO_URI:$IMAGE_TAG -f AWS_Basic_App/Dockerfile .
+      - docker build -t $REPO_URI:$IMAGE_TAG -f AWS_Basic_App/Dockerfile AWS_Basic_App
+      
   post_build:
     commands:
       - echo Writing image definitions...
