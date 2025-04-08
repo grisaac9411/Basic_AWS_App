@@ -1,27 +1,26 @@
 version: 0.2
 
-env:
-  variables:
-    IMAGE_TAG: "latest"
-
 phases:
+  install:
+    commands:
+      - echo Installing dependencies...
+      # (You can add any dependency installation here if needed)
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
       - ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
       - REPO_URI=$ACCOUNT_ID.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/my-dotnet-app
       - aws ecr get-login-password | docker login --username AWS --password-stdin $REPO_URI
-
   build:
     commands:
+      - echo Checking the directory structure...
+      - ls -l  # Verifying the directory contents in CodeBuild environment
       - echo Building the Docker image...
-      - docker build -t $REPO_URI:$IMAGE_TAG ./wwwroot
-
-
+      - docker build -t $REPO_URI:$IMAGE_TAG -f AWS_Basic_App/Dockerfile .
   post_build:
     commands:
       - echo Writing image definitions...
-      - printf '[{"name":"dotnet-container","imageUri":"506007020487.dkr.ecr.us-east-1.amazonaws.com/grisaac/awsrepos:latest"}]' $REPO_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"dotnet-container","imageUri":"%s"}]' $REPO_URI:$IMAGE_TAG > imagedefinitions.json
 
 artifacts:
   files:
