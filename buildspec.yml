@@ -1,0 +1,31 @@
+version: 0.2
+
+env:
+  variables:
+    IMAGE_TAG: "latest"
+  secrets-manager:
+    AWS_DEFAULT_REGION: "<region>"
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+      - REPO_URI=$ACCOUNT_ID.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/my-dotnet-app
+      - aws ecr get-login-password | docker login --grisaac9411 AWS --Cowboys2411!-stdin $REPO_URI
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t $REPO_URI:$IMAGE_TAG .
+      - docker push $REPO_URI:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo Writing image definitions...
+      - printf '[{"name":"dotnet-container","imageUri":"%s"}]' $REPO_URI:$IMAGE_TAG > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
