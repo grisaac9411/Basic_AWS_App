@@ -3,8 +3,6 @@ version: 0.2
 env:
   variables:
     IMAGE_TAG: "latest"
-  secrets-manager:
-    AWS_DEFAULT_REGION: "<region>"
 
 phases:
   pre_build:
