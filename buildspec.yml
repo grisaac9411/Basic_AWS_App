@@ -22,7 +22,7 @@ phases:
   post_build:
     commands:
       - echo Writing image definitions...
-      - printf '[{"name":"dotnet-container","imageUri":"%s"}]' $REPO_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"AWSContainer","imageUri":"%s"}]' $REPO_URI:$IMAGE_TAG > imagedefinitions.json
 
 artifacts:
   files:
