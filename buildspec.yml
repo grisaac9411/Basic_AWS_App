@@ -14,10 +14,9 @@ phases:
 
   build:
     commands:
-      - echo Build started on `date`
       - echo Building the Docker image...
       - docker build -t $REPO_URI:$IMAGE_TAG ./wwwroot
-      - docker push $REPO_URI:$IMAGE_TAG
+
 
   post_build:
     commands:
