@@ -10,7 +10,7 @@ phases:
       - echo Logging in to Amazon ECR...
       - ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
       - REPO_URI=$ACCOUNT_ID.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/my-dotnet-app
-      - aws ecr get-login-password | docker login --grisaac9411 AWS --Cowboys2411!-stdin $REPO_URI
+      - aws ecr get-login-password | docker login --username AWS --password-stdin $REPO_URI
 
   build:
     commands:
