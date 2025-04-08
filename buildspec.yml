@@ -4,12 +4,13 @@ phases:
   install:
     commands:
       - echo Installing dependencies...
-      # (You can add any dependency installation here if needed)
+      # You can add any dependency installation here if needed
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
       - ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
       - REPO_URI=$ACCOUNT_ID.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/my-dotnet-app
+      - IMAGE_TAG=latest  # Set IMAGE_TAG to 'latest' or use a timestamp if you prefer
       - aws ecr get-login-password | docker login --username AWS --password-stdin $REPO_URI
   build:
     commands:
